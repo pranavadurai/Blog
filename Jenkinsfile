@@ -2,37 +2,38 @@ pipeline {
     agent any
 
     tools{
-      maven 'localmaven' 
- }
+      maven 'localmaven'
+ } 
     stages {
-        stage('Build') { 
+       
+        stage('Build') {
             steps {
-                sh 'mvn clean package' 
+                sh 'mvn clean package'
             }
             post {
                 success {
                     echo 'Now Archiving...'
                     archiveArtifacts artifacts: '**/target/*.jar'
                 }
-            } 
+            }
         }
 
-     stage('Test') { 
+        stage('Test') {
             steps {
-                sh 'mvn test' 
+                sh 'mvn test'
             }
             post {
                 always {
-                    junit 'target/surefire-reports/*.xml' 
+                    junit 'target/surefire-reports/*.xml'
                 }
             }
         }
+        
         stage('Deliver') {
             steps {
-                 sh 'scp -v -o StrictHostKeyChecking=no  -i /var/lib/jenkins/secrets/mykey target/*.jar ubuntu@13.127.213.32:/home/ubuntu/deploy'
-                 sh "sshpass -p password ssh -o StrictHostKeyChecking=no -i /var/lib/jenkins/secrets/mykey ubuntu@13.127.213.32 'cp /home/ubuntu/start.sh /home/ubuntu/deploy'"
-                 sh "sshpass -p password ssh -o StrictHostKeyChecking=no -i /var/lib/jenkins/secrets/mykey ubuntu@13.127.213.32 'chmod 700 /home/ubuntu/deploy/start.sh'"
-                 sh "sshpass -p password ssh -o StrictHostKeyChecking=no -i /var/lib/jenkins/secrets/mykey ubuntu@13.127.213.32 '/home/ubuntu/deploy/start.sh'"
+                 def pom = readMavenPom file: 'pom.xml'     
+                 sh 'scp -v -o StrictHostKeyChecking=no  -i /var/lib/jenkins/secrets/mykey target/*.jar ubuntu@13.232.72.132:/home/ubuntu/deploy/${pom.version}'
+                 sh "sshpass -p password ssh -o StrictHostKeyChecking=no -i /var/lib/jenkins/secrets/mykey ubuntu@13.232.72.132 '/home/ubuntu/start.sh ${pom.version}'"
             }
         }
     }
