@@ -30,11 +30,14 @@ pipeline {
         }
         
         stage('Deliver') {
-            steps {
-                 def pom = readMavenPom file: 'pom.xml'     
-                 sh 'scp -v -o StrictHostKeyChecking=no  -i /var/lib/jenkins/secrets/mykey target/*.jar ubuntu@13.126.195.164:/home/ubuntu/deploy/${pom.version}'
-                 sh "sshpass -p password ssh -o StrictHostKeyChecking=no -i /var/lib/jenkins/secrets/mykey ubuntu@13.126.195.164 '/home/ubuntu/start.sh ${pom.version}'"
+                 steps {
+                 def pom = readMavenPom file: 'pom.xml'
+                 }
+                 steps {
+                      sh 'scp -v -o StrictHostKeyChecking=no  -i /var/lib/jenkins/secrets/mykey target/*.jar ubuntu@13.126.195.164:/home/ubuntu/deploy/${pom.version}'
+                      sh "sshpass -p password ssh -o StrictHostKeyChecking=no -i /var/lib/jenkins/secrets/mykey ubuntu@13.126.195.164 '/home/ubuntu/start.sh ${pom.version}'"
+                 }  
             }
         }
     }
-}
+
