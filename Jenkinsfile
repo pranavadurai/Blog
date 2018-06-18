@@ -1,13 +1,14 @@
 pipeline {
     agent any
+    
+    environment {
+        version = '0.0.0'
+    }
 
     tools{
       maven 'localmaven'
  } 
-    stages {
-       
-        pom = readMavenPom file: 'pom.xml'
-        
+    stages {      
        
         stage('Build') {
             steps {
@@ -34,8 +35,13 @@ pipeline {
         
         stage('Deliver') {
                  steps {
-                      sh 'scp -v -o StrictHostKeyChecking=no  -i /var/lib/jenkins/secrets/mykey target/*.jar ubuntu@13.126.195.164:/home/ubuntu/deploy/${pom.version}'
-                      sh "sshpass -p password ssh -o StrictHostKeyChecking=no -i /var/lib/jenkins/secrets/mykey ubuntu@13.126.195.164 '/home/ubuntu/start.sh ${pom.version}'"
+                      script {
+                          def pom = readMavenPom file: 'pom.xml'
+                          version = pom.version
+                      }
+
+                      sh 'scp -v -o StrictHostKeyChecking=no  -i /var/lib/jenkins/secrets/mykey target/*.jar ubuntu@13.126.195.164:/home/ubuntu/deploy/${version}'
+                      sh "sshpass -p password ssh -o StrictHostKeyChecking=no -i /var/lib/jenkins/secrets/mykey ubuntu@13.126.195.164 '/home/ubuntu/start.sh ${version}'"
                  }  
             }
         }
