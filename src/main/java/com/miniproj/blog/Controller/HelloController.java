@@ -9,6 +9,6 @@ public class HelloController {
 	
 	@GetMapping("/hello")
 	public String printhelloworld() {
-		return "hello-Pranavadurai";
+		return "hello-changed";
 	}
 }
