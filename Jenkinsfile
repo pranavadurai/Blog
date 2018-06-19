@@ -40,7 +40,6 @@ pipeline {
                           VERSION = pom.version
                           }
                       echo "${VERSION}"
-                      sh "sshpass -p password ssh -o StrictHostKeyChecking=no -i /var/lib/jenkins/secrets/mykey ubuntu@52.66.164.242 'mkdir /home/ubuntu/deploy/${VERSION}'"
                       sh "scp -v -o StrictHostKeyChecking=no  -i /var/lib/jenkins/secrets/mykey target/*.jar ubuntu@52.66.164.242:/home/ubuntu/deploy/${VERSION}"	
                       sh "sshpass -p password ssh -o StrictHostKeyChecking=no -i /var/lib/jenkins/secrets/mykey ubuntu@52.66.164.242 '/home/ubuntu/start.sh ${VERSION}'"
                  }  
