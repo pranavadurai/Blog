@@ -40,9 +40,9 @@ pipeline {
                           VERSION = pom.version
                           }
                       echo "${VERSION}"
-                      sh "sshpass -p password ssh -o StrictHostKeyChecking=no -i /var/lib/jenkins/secrets/mykey ubuntu@13.126.67.207 'mkdir -p /home/ubuntu/deploy/${VERSION}'"
-                      sh "scp -v -o StrictHostKeyChecking=no  -i /var/lib/jenkins/secrets/mykey target/*.jar ubuntu@13.126.67.207:/home/ubuntu/deploy/${VERSION}"	
-                      sh "sshpass -p password ssh -o StrictHostKeyChecking=no -i /var/lib/jenkins/secrets/mykey ubuntu@13.126.67.207 '/home/ubuntu/stop.sh; /home/ubuntu/start.sh ${VERSION}'"
+                      sh "sshpass -p password ssh -o StrictHostKeyChecking=no -i /var/lib/jenkins/secrets/mykey ubuntu@13.127.232.200 'mkdir -p /home/ubuntu/deploy/${VERSION}'"
+                      sh "scp -v -o StrictHostKeyChecking=no  -i /var/lib/jenkins/secrets/mykey target/*.jar ubuntu@13.127.232.200:/home/ubuntu/deploy/${VERSION}"	
+                      sh "sshpass -p password ssh -o StrictHostKeyChecking=no -i /var/lib/jenkins/secrets/mykey ubuntu@13.127.232.200 '/home/ubuntu/stop.sh; /home/ubuntu/start.sh ${VERSION}'"
                  }  
             }
         }
