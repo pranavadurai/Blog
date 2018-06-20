@@ -3,6 +3,7 @@ pipeline {
     
     environment {
         version = '0.0.0'
+        deploy_Server = '13.126.193.53'
     }
 
     tools{
@@ -40,9 +41,9 @@ pipeline {
                           VERSION = pom.version
                           }
                       echo "${VERSION}"
-                      sh "sshpass -p password ssh -o StrictHostKeyChecking=no -i /var/lib/jenkins/secrets/mykey ubuntu@13.127.232.200 'mkdir -p /home/ubuntu/deploy/${VERSION}'"
-                      sh "scp -v -o StrictHostKeyChecking=no  -i /var/lib/jenkins/secrets/mykey target/*.jar ubuntu@13.127.232.200:/home/ubuntu/deploy/${VERSION}"	
-                      sh "sshpass -p password ssh -o StrictHostKeyChecking=no -i /var/lib/jenkins/secrets/mykey ubuntu@13.127.232.200 '/home/ubuntu/stop.sh; /home/ubuntu/start.sh ${VERSION};'"
+                      sh "sshpass -p password ssh -o StrictHostKeyChecking=no -i /var/lib/jenkins/secrets/mykey ubuntu@${deploy_Server} 'mkdir -p /home/ubuntu/deploy/${VERSION}'"
+                      sh "scp -v -o StrictHostKeyChecking=no  -i /var/lib/jenkins/secrets/mykey target/*.jar ubuntu@${deploy_Server}:/home/ubuntu/deploy/${VERSION}"	
+                      sh "sshpass -p password ssh -o StrictHostKeyChecking=no -i /var/lib/jenkins/secrets/mykey ubuntu@${deploy_Server} '/home/ubuntu/stop.sh; /home/ubuntu/start.sh ${VERSION};'"
                  }  
             }
         }
