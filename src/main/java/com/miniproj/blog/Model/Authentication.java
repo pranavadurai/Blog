@@ -29,11 +29,10 @@ public class Authentication {
 		
 	}
 	
-	public Authentication(String email, String password, Profile profile) {
+	public Authentication(String email, String password) {
 		super();
 		this.email = email;
 		this.password = password;
-		this.profile = profile;
 		this.remembertoken = generate_remember_token();
 	}
 	
@@ -56,7 +55,7 @@ public class Authentication {
 	    String token = encoder.encodeToString(bytes);
 	    return token.substring(0, 40);
 	}
-
+	
 	public int getId() {
 		return id;
 	}

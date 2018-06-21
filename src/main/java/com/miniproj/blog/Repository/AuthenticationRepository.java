@@ -8,4 +8,6 @@ import com.miniproj.blog.Model.Authentication;
 @Repository
 public interface AuthenticationRepository extends JpaRepository<Authentication,Integer> {
 
+	Authentication findByRemembertoken(String remembertoken);
+	Authentication findByEmail(String email);
 }
