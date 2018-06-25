@@ -71,7 +71,7 @@ public class AuthenticationController {
 		emailService.sendWelcomeMessage(email,name);
 		logger.info("Authentication created for the new user: "+name+ "Authe id :" +authentication.getId());
 		model.addAttribute("remembertoken", authentication.getRemembertoken());
-		return "redirect:/profile";
+		return "redirect:/profile/"+authentication.getProfile().getId();
 	}
 		
 	@GetMapping("/signin")

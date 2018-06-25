@@ -3,7 +3,7 @@ pipeline {
     
     environment {
         version = '0.0.0'
-        deploy_Server = '13.232.130.254'
+        deploy_Server = '35.154.160.177'
     }
 
     tools{
