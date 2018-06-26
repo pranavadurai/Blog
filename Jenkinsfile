@@ -3,7 +3,7 @@ pipeline {
     
     environment {
         version = '0.0.0'
-        deploy_Server = '35.154.160.177'
+        deploy_Server = '13.232.57.44'
     }
 
     tools{
@@ -33,6 +33,26 @@ pipeline {
                 }
             }
         }
+        
+         stage('Deliver in Docker') {
+                 steps {
+                      script {
+                          def pom = readMavenPom file: 'pom.xml'
+                          VERSION = pom.version
+                          }
+                      echo "${VERSION}"
+                       sh "docker build -t blog:${version} ."	
+                 }  
+                 post {
+                     success {
+                         withCredentials([usernamePassword(credentialsId: 'Jenkindoc', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                              pushToImage("blog:${version}", "latest", USERNAME, PASSWORD)
+                          }
+                     }
+
+                 }
+
+            }       
         
         stage('Deliver in shell Script') {
                  steps {
