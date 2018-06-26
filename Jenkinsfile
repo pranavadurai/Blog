@@ -54,12 +54,12 @@ pipeline {
                           VERSION = pom.version
                           }
                       echo "${VERSION}"
-                       sh "docker build -t blog:${version} ."	
+                       sh "docker build -t blog:${VERSION} ."	
                  }  
                  post {
                      success {
                          withCredentials([usernamePassword(credentialsId: 'Jenkindoc', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                              pushToImage("blog:${version}", "latest", USERNAME, PASSWORD)
+                              pushToImage("blog:${VERSION}", "blog:${VERSION}", USERNAME, PASSWORD)
                           }
                      }
 
