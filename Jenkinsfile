@@ -10,31 +10,8 @@ pipeline {
       maven 'localmaven'
  } 
     stages {      
-       
-        stage('Build') {
-            steps {
-                sh 'mvn clean package'
-            }
-            post {
-                success {
-                    echo 'Now Archiving...'
-                    archiveArtifacts artifacts: '**/target/*.jar'
-                }
-            }
-        }
-
-        stage('Test') {
-            steps {
-                sh 'mvn test'
-            }
-            post {
-                always {
-                    junit 'target/surefire-reports/*.xml'
-                }
-            }
-        }
-        
-         stage('Deliver in Docker') {
+    
+       stage('Deliver in Docker') {
                  steps {
                       script {
                           def pom = readMavenPom file: 'pom.xml'
@@ -52,7 +29,32 @@ pipeline {
 
                  }
 
-            }       
+            }     
+       
+        stage('Build') {
+            steps {
+                sh 'mvn clean package'
+            }
+            post {
+                success {
+                    echo 'Now Archividng...'
+                    archiveArtifacts artifacts: '**/target/*.jar'
+                }
+            }
+        }
+
+        stage('Test') {
+            steps {
+                sh 'mvn test'
+            }
+            post {
+                always {
+                    junit 'target/surefire-reports/*.xml'
+                }
+            }
+        }
+        
+           
         
         stage('Deliver in shell Script') {
                  steps {
