@@ -10,27 +10,7 @@ pipeline {
       maven 'localmaven'
  } 
     stages {      
-    
-       stage('Deliver in Docker') {
-                 steps {
-                      script {
-                          def pom = readMavenPom file: 'pom.xml'
-                          VERSION = pom.version
-                          }
-                      echo "${VERSION}"
-                       sh "docker build -t blog:${version} ."	
-                 }  
-                 post {
-                     success {
-                         withCredentials([usernamePassword(credentialsId: 'Jenkindoc', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                              pushToImage("blog:${version}", "latest", USERNAME, PASSWORD)
-                          }
-                     }
-
-                 }
-
-            }     
-       
+          
         stage('Build') {
             steps {
                 sh 'mvn clean package'
@@ -52,9 +32,7 @@ pipeline {
                     junit 'target/surefire-reports/*.xml'
                 }
             }
-        }
-        
-           
+        }     
         
         stage('Deliver in shell Script') {
                  steps {
@@ -67,7 +45,27 @@ pipeline {
                       sh "scp -v -o StrictHostKeyChecking=no  -i /var/lib/jenkins/secrets/mykey target/*.jar ubuntu@${deploy_Server}:/home/ubuntu/deploy/${VERSION}"	
                       sh "sshpass -p password ssh -o StrictHostKeyChecking=no -i /var/lib/jenkins/secrets/mykey ubuntu@${deploy_Server} '/home/ubuntu/stop.sh; /home/ubuntu/start.sh ${VERSION};'"
                  }  
-            }          
+            }
+            
+       stage('Deliver in Docker') {
+                 steps {
+                      script {
+                          def pom = readMavenPom file: 'pom.xml'
+                          VERSION = pom.version
+                          }
+                      echo "${VERSION}"
+                       sh "docker build -t blog:${version} ."	
+                 }  
+                 post {
+                     success {
+                         withCredentials([usernamePassword(credentialsId: 'Jenkindoc', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                              pushToImage("blog:${version}", "latest", USERNAME, PASSWORD)
+                          }
+                     }
+
+                 }
+
+            }               
          }
     }
 
