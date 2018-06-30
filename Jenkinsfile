@@ -3,7 +3,7 @@ pipeline {
     
     environment {
         version = '0.0.0'
-        deploy_Server = '13.232.57.44'
+        deploy_Server = '13.232.49.23'
     }
 
     tools{
@@ -58,8 +58,8 @@ pipeline {
                  }  
                  post {
                      success {
-                         withCredentials([usernamePassword(credentialsId: 'Jenkindoc', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                              pushToImage("blog:${VERSION}", "blog:${VERSION}", USERNAME, PASSWORD)
+                         withDockerRegistry([ credentialsId: "Jenkindoc", url: "" ]) {
+                           sh 'docker push pranavam21/blog:${VERSION}'
                           }
                      }
 

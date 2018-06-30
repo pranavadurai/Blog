@@ -6,7 +6,6 @@
 	<groupId>com.miniproj</groupId>
 	<artifactId>blog</artifactId>
 	<version>0.0.1</version>
-	<packaging>jar</packaging>
 
 	<name>blog</name>
 	<description>Demo project for Spring Boot</description>
