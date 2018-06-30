@@ -2,16 +2,23 @@ pipeline {
     agent any
     
     environment {
-        version = '0.0.0'
+        VERSION = '0.0.0'
         deploy_Server = '13.232.49.23'
+        docker_deploy_server = '13.126.249.71'
     }
 
     tools{
       maven 'localmaven'
  } 
-    stages {      
+    stages {
+    
+        stage('Compile') {
+            steps {
+                sh 'mvn compile'
+            }
+        }      
           
-        stage('Build') {
+        stage('Pakage and archieve jar file') {
             steps {
                 sh 'mvn clean package'
             }
@@ -54,7 +61,7 @@ pipeline {
                           VERSION = pom.version
                           }
                       echo "${VERSION}"
-                       sh "docker build -t blog:${VERSION} ."	
+                       sh "docker build -t pranavam21/blog:${VERSION} ."	
                  }  
                  post {
                      success {
@@ -65,7 +72,18 @@ pipeline {
 
                  }
 
-            }               
+            }
+            
+        stage('Deploy the build docker in server') {
+            steps {
+                 script {
+                          def pom = readMavenPom file: 'pom.xml'
+                          VERSION = pom.version
+                          }
+                 sh "sshpass -p password ssh -o StrictHostKeyChecking=no -i /var/lib/jenkins/secrets/mykey ubuntu@${deploy_Server} 'docker pull pranavam21/blog:${VERSION}'"
+                 sh "sshpass -p password ssh -o StrictHostKeyChecking=no -i /var/lib/jenkins/secrets/mykey ubuntu@${deploy_Server} 'docker run -d -t blog pranavam21/blog:${VERSION}'"
+            }
+        }                       
          }
     }
 
