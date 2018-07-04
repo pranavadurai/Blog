@@ -70,12 +70,8 @@ pipeline {
                           VERSION = pom.version
                           }
                          echo "${VERSION}"
-                         withDockerRegistry([ credentialsId: "Jenkindoc", url: "" ]) {
-                           script {
-                          def pom = readMavenPom file: 'pom.xml'
-                          VERSION = pom.version
-                          }
-                           sh 'docker push pranavam21/blog:${VERSION}'
+                         withDockerRegistry([ credentialsId: "Jenkindoc", url: "" ]) {	
+                           sh "docker push pranavam21/blog:${VERSION}"
                           }
                      }
 
