@@ -1,6 +1,6 @@
 <%@ include file="common/header.jspf" %>
 <div class = "container">
-    <h2 class = "text-center mt-2">Post</h2>
+    <h2 class = "text-center mt-2">Post delete </h2>
     <form:form method = "post" modelAttribute = "Post">
     <div class = "row justify-content-md-center mt-4">
      <div class = "col-md-5 all_border">
