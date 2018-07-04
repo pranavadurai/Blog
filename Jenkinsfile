@@ -3,8 +3,8 @@ pipeline {
     
     environment {
         VERSION = '0.0.0'
-        deploy_Server = '13.232.49.23'
-        docker_deploy_server = '13.126.249.71'
+        deploy_Server = '13.126.125.4'
+        docker_deploy_server = '13.127.41.218'
     }
 
     tools{
@@ -54,7 +54,7 @@ pipeline {
                  }  
             }
             
-       stage('Deliver in Docker') {
+       stage('Build Docker Image and push') {
                  steps {
                       script {
                           def pom = readMavenPom file: 'pom.xml'
@@ -80,8 +80,8 @@ pipeline {
                           def pom = readMavenPom file: 'pom.xml'
                           VERSION = pom.version
                           }
-                 sh "sshpass -p password ssh -o StrictHostKeyChecking=no -i /var/lib/jenkins/secrets/mykey ubuntu@${deploy_Server} 'docker pull pranavam21/blog:${VERSION}'"
-                 sh "sshpass -p password ssh -o StrictHostKeyChecking=no -i /var/lib/jenkins/secrets/mykey ubuntu@${deploy_Server} 'docker run -d -t blog pranavam21/blog:${VERSION}'"
+                 sh "sshpass -p password ssh -o StrictHostKeyChecking=no -i /var/lib/jenkins/secrets/mykey root@${deploy_Server} 'docker pull pranavam21/blog:${VERSION}'"
+                 sh "sshpass -p password ssh -o StrictHostKeyChecking=no -i /var/lib/jenkins/secrets/mykey root@${deploy_Server} 'docker run -d -t blog pranavam21/blog:${VERSION}'"
             }
         }                       
          }
