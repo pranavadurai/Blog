@@ -85,7 +85,9 @@ pipeline {
                           def pom = readMavenPom file: 'pom.xml'
                           VERSION = pom.version
                           }
-                 sh "sshpass -p password ssh -o StrictHostKeyChecking=no -i /var/lib/jenkins/secrets/mykey root@${dockerdeploy_server} 'docker pull pranavam21/blog:${VERSION}'"
+                 withDockerRegistry([ credentialsId: "Jenkindoc", url: "" ]) {	
+                           sh "sshpass -p password ssh -o StrictHostKeyChecking=no -i /var/lib/jenkins/secrets/mykey root@${dockerdeploy_server} 'docker pull pranavam21/blog:${VERSION}'"
+                          }
                  sh "sshpass -p password ssh -o StrictHostKeyChecking=no -i /var/lib/jenkins/secrets/mykey root@${dockerdeploy_server} 'docker run -d -t blog pranavam21/blog:${VERSION}'"
             }
         }                       
