@@ -5,7 +5,7 @@
 
 	<groupId>com.miniproj</groupId>
 	<artifactId>blog</artifactId>
-	<version>0.0.1</version>
+	<version>0.0.2</version>
 
 	<name>blog</name>
 	<description>Demo project for Spring Boot</description>
@@ -122,4 +122,5 @@
 	</build>
 
 
+	<packaging>war</packaging>
 </project>

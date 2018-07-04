@@ -18,14 +18,14 @@ pipeline {
             }
         }      
           
-        stage('Pakage and archieve jar file') {
+        stage('Pakage and archieve war file') {
             steps {
                 sh 'mvn clean package'
             }
             post {
                 success {
                     echo 'Now Archividng...'
-                    archiveArtifacts artifacts: '**/target/*.jar'
+                    archiveArtifacts artifacts: '**/target/*.war'
                 }
             }
         }
@@ -49,7 +49,7 @@ pipeline {
                           }
                       echo "${VERSION}"
                       sh "sshpass -p password ssh -o StrictHostKeyChecking=no -i /var/lib/jenkins/secrets/mykey ubuntu@${deploy_Server} 'mkdir -p /home/ubuntu/deploy/${VERSION}'"
-                      sh "scp -v -o StrictHostKeyChecking=no  -i /var/lib/jenkins/secrets/mykey target/*.jar ubuntu@${deploy_Server}:/home/ubuntu/deploy/${VERSION}"	
+                      sh "scp -v -o StrictHostKeyChecking=no  -i /var/lib/jenkins/secrets/mykey target/*.war ubuntu@${deploy_Server}:/home/ubuntu/deploy/${VERSION}"	
                       sh "sshpass -p password ssh -o StrictHostKeyChecking=no -i /var/lib/jenkins/secrets/mykey ubuntu@${deploy_Server} '/home/ubuntu/stop.sh; /home/ubuntu/start.sh ${VERSION};'"
                  }  
             }
@@ -60,11 +60,16 @@ pipeline {
                           def pom = readMavenPom file: 'pom.xml'
                           VERSION = pom.version
                           }
-                      echo "${VERSION}"
+                       echo "${VERSION}"
                        sh "docker build -t pranavam21/blog:${VERSION} ."	
                  }  
                  post {
                      success {
+                        script {
+                          def pom = readMavenPom file: 'pom.xml'
+                          VERSION = pom.version
+                          }
+                         echo "${VERSION}"
                          withDockerRegistry([ credentialsId: "Jenkindoc", url: "" ]) {
                            sh 'docker push pranavam21/blog:${VERSION}'
                           }
