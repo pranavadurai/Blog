@@ -3,8 +3,8 @@ pipeline {
     
     environment {
         VERSION = '0.0.0'
-        deploy_Server = '13.127.228.76'
-        dockerdeploy_server = '13.127.191.158'
+        deploy_Server = '52.66.45.225'
+        dockerdeploy_server = '13.126.242.100'
     }
 
     tools{
@@ -86,8 +86,8 @@ pipeline {
                           VERSION = pom.version
                           }
                  withDockerRegistry([ credentialsId: "Jenkindoc", url: "" ]) {	
-                           sh "sshpass -p password ssh -o StrictHostKeyChecking=no -i /var/lib/jenkins/secrets/mykey ubuntu@${dockerdeploy_server} 'docker pull pranavam21/blog:${VERSION}'"
-                            sh "sshpass -p password ssh -o StrictHostKeyChecking=no -i /var/lib/jenkins/secrets/mykey ubuntu@${dockerdeploy_server} 'docker run -d --name blog pranavam21/blog:${VERSION}'"
+                            sh "sshpass -p password ssh -o StrictHostKeyChecking=no -i /var/lib/jenkins/secrets/mykey ubuntu@${dockerdeploy_server} 'docker pull pranavam21/blog:${VERSION}'"
+                            sh "sshpass -p password ssh -o StrictHostKeyChecking=no -i /var/lib/jenkins/secrets/mykey ubuntu@${dockerdeploy_server} 'docker run -d -p 8080:8080 --name blog pranavam21/blog:${VERSION}'"
                           }  
             }
         }                       
