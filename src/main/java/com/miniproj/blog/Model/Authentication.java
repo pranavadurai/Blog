@@ -30,6 +30,11 @@ public class Authentication {
 		
 	}
 	
+	public Authentication (String email) {
+		super();
+		this.email=email;
+	}
+	
 	public Authentication(String email, String password) {
 		super();
 		this.email = email;
