@@ -9,10 +9,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
+import com.miniproj.blog.ExceptionHandlers.ProfileNotFoundException;
 import com.miniproj.blog.Model.Authentication;
 import com.miniproj.blog.Model.Profile;
-import com.miniproj.blog.Repository.ProfileRepository;
 import com.miniproj.blog.Service.AuthenticationService;
+import com.miniproj.blog.Service.ProfileService;
 
 @Controller
 @SessionAttributes("remembertoken")
@@ -24,7 +25,7 @@ public class ProfileController {
 	public AuthenticationService authService;
 	
 	@Autowired
-	public ProfileRepository profileRepository;
+	public ProfileService profileService;
 	
 	@GetMapping("/profile/{id}")
 	public String showtheprofilepage(ModelMap model,@PathVariable int id) {
@@ -34,10 +35,14 @@ public class ProfileController {
 			return "redirect:/signin";
 		
 		logger.info("Found the Authentication:"+ authentication.getProfile().getId());
-		Profile profile = profileRepository.findById(id);
+		Profile profile = profileService.getProfile(id);
+		if(profile ==null)
+			throw new ProfileNotFoundException("Profile with the id: "+id+" Not found");
+		
 		logger.info("Found profile:"+profile);
 		model.addAttribute("Auth_profile",authentication.getProfile());
 		model.addAttribute("profile",profile);
+		model.addAttribute("profile_posts",profile.getPosts());
 		return "profile";
 	}
 }

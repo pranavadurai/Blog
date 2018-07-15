@@ -32,4 +32,9 @@ public class ProfileService {
 		return authentication;
 	}
 	
+	public Profile getProfile(int id) {
+		Profile profile =  profileRepository.findById(id);
+		return profile;
+	}
+	
 }

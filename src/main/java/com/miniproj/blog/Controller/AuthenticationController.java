@@ -17,9 +17,8 @@ import org.springframework.web.bind.support.SessionStatus;
 
 import com.miniproj.blog.Model.Authentication;
 import com.miniproj.blog.Model.Profile;
-import com.miniproj.blog.Repository.AuthenticationRepository;
-import com.miniproj.blog.Repository.ProfileRepository;
 import com.miniproj.blog.Service.AuthenticationService;
+import com.miniproj.blog.Service.PostService;
 import com.miniproj.blog.Service.ProfileService;
 import com.miniproj.blog.emailService.EmailServiceImpl;
 
@@ -28,18 +27,15 @@ import freemarker.template.TemplateException;
 @Controller
 @SessionAttributes("remembertoken")
 public class AuthenticationController {
-
-	@Autowired
-	public AuthenticationRepository authRepository;
-	
-	@Autowired
-	public ProfileRepository profileRepository;
 	
 	@Autowired
 	public AuthenticationService authService;
 	
 	@Autowired
 	public ProfileService profileService;
+	
+	@Autowired
+	public PostService postService;
 	
 	@Autowired
 	public EmailServiceImpl emailService;
@@ -54,6 +50,8 @@ public class AuthenticationController {
 			model.addAttribute("Auth_profile",new Profile());
 		else
 		    model.addAttribute("Auth_profile",authentication.getProfile());
+		
+		model.addAttribute("posts", postService.getAllPosts());
 		return "home";
 	}
 

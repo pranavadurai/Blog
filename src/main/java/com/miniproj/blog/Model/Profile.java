@@ -15,7 +15,7 @@ import javax.persistence.OneToOne;
 public class Profile {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY) 
+	@GeneratedValue(strategy = GenerationType.AUTO) 
 	private int id;
 	private String name;
 	private String email;
@@ -82,6 +82,14 @@ public class Profile {
 
 	public void setAuthentication(Authentication authentication) {
 		this.authentication = authentication;
+	}
+	
+	public List<Post> getPosts() {
+		return posts;
+	}
+
+	public void setPosts(List<Post> posts) {
+		this.posts = posts;
 	}
 
 	@Override

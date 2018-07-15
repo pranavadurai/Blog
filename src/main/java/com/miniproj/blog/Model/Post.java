@@ -60,6 +60,6 @@ public class Post {
 
 	@Override
 	public String toString() {
-		return "Post [id=" + id + ", tweet=" + tweet + "]";
+		return "Post [id=" + id + ", tweet=" + tweet + ", profile=" + profile + "]";
 	}
 }
