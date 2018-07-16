@@ -79,6 +79,7 @@ public class PostController {
 			return "redirect:/signin";
 		
 		logger.info("Found the Authentication:"+ authentication.getProfile().getId());
+		model.addAttribute("Auth_profile",authentication.getProfile());
 		Post post = postRepository.findById(id);
 		logger.info("Found the post:"+post);
 		model.addAttribute("post",post);

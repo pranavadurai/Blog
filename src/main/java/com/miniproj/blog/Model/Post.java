@@ -15,7 +15,7 @@ public class Post {
 	
 	private String tweet;
 	
-	@OneToOne(fetch = FetchType.LAZY)
+	@OneToOne(fetch = FetchType.EAGER)
 	private Profile profile;
 	
 	public Post() {
