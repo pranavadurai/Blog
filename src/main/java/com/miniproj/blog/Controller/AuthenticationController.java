@@ -51,8 +51,7 @@ public class AuthenticationController {
 		else
 		    model.addAttribute("Auth_profile",authentication.getProfile());
 		
-		model.addAttribute("posts", postService.getAllPosts());
-		return "home";
+	   return "home";
 	}
 
 	@GetMapping("/signup")

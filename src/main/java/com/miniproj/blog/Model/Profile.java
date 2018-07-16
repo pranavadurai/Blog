@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Profile {
 
@@ -22,10 +24,12 @@ public class Profile {
 	private String location;
 	
 	@OneToOne(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "profile")
+	@JsonIgnore
 	Authentication authentication;
 	
 	@OneToMany(fetch=FetchType.LAZY, cascade= CascadeType.ALL, mappedBy = "profile")
-    List<Post> posts; 	
+	@JsonIgnore
+	List<Post> posts; 	
 	
     public Profile() {
 		

@@ -3,6 +3,8 @@ package com.miniproj.blog.Controller;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,7 +14,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.miniproj.blog.Model.Authentication;
+import com.miniproj.blog.Model.Post;
 import com.miniproj.blog.Service.AuthenticationService;
+import com.miniproj.blog.Service.PostService;
+
 
 @RestController
 @SessionAttributes("remembertoken")
@@ -23,12 +28,23 @@ public class AuthenticationVerificationController {
 	@Autowired
 	public AuthenticationService authService;
 	
+	@Autowired
+	public PostService postService;
+	
 	@GetMapping("/check_email")
 	public Boolean checkTheSignupEmailIsNew(@RequestParam String email) {
 		logger.info("Check email called and the email id:"+email);
 		Boolean found = authService.findByEmail(email);
 		return found;
 	}
+	
+	@GetMapping("/test")
+	public Page<Post> checkThesSignupEmailIsNew(Pageable pageable) {
+		logger.info("All post are requestd");
+		Page<Post> posts = postService.getAllPosts(pageable);
+		return posts;
+	}
+	
 	
 	@PostMapping("/signin")
 	public String signintheuser(@RequestBody Authentication authentication, ModelMap model) {
