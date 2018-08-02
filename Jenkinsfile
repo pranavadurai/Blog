@@ -3,8 +3,8 @@ pipeline {
     
     environment {
         VERSION = '0.0.0'
-        deploy_Server = '52.66.45.225'
-        dockerdeploy_server = '13.126.242.100'
+        deploy_Server = '13.127.101.24'
+        dockerdeploy_server = '13.127.164.152'
     }
 
     tools{
@@ -27,6 +27,7 @@ pipeline {
                     echo 'Now Archividng...'
                     archiveArtifacts artifacts: '**/target/*.war'
                 }
+
             }
         }
 
