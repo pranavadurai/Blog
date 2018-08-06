@@ -3,8 +3,8 @@ pipeline {
     
     environment {
         VERSION = '0.0.0'
-        deploy_Server = '13.127.101.24'
-        dockerdeploy_server = '13.127.164.152'
+        deploy_Server = '13.126.96.150'
+        dockerdeploy_server = '13.126.100.150'
     }
 
     tools{
