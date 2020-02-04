@@ -1,6 +1,6 @@
 pipeline {
     agent any
-    
+    //mhbjhvjhvjv
     environment {
         VERSION = '0.0.0'
         deploy_Server = '13.126.96.150'
